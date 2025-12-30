@@ -55,12 +55,14 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4 font-sans">
+    <div className="min-h-screen bg-gray-100 flex items-center justify-center p-0 lg:p-4 font-sans">
       {/* Laptop Frame Mockup (White Container) */}
-      <div className="bg-white w-full max-w-5xl aspect-[16/10] rounded-xl shadow-2xl overflow-hidden flex flex-col relative border-8 border-gray-200">
+      {/* Laptop Frame Mockup (White Container) - Responsive adjustments */}
+      {/* On mobile: full width/height or simple card. On Desktop: Laptop aspect ratio and borders */}
+      <div className="bg-white w-full max-w-5xl lg:aspect-[16/10] min-h-screen lg:min-h-0 h-auto rounded-none lg:rounded-xl shadow-none lg:shadow-2xl overflow-y-auto lg:overflow-hidden flex flex-col relative border-0 lg:border-8 border-gray-200">
 
-        {/* Fake Browser Top Bar */}
-        <div className="h-8 border-b flex items-center px-4 bg-white">
+        {/* Fake Browser Top Bar - Visible mostly on desktop or keep for style but simplify */}
+        <div className="h-8 border-b flex items-center px-4 bg-white shrink-0 sticky top-0 z-10">
           <div className="flex gap-1.5">
             <div className="w-2.5 h-2.5 rounded-full border border-gray-400"></div>
             <div className="w-2.5 h-2.5 rounded-full border border-gray-400"></div>
@@ -69,9 +71,9 @@ function App() {
         </div>
 
         {/* Content */}
-        <div className="flex-1 p-12 flex flex-col items-center">
+        <div className="flex-1 p-6 lg:p-12 flex flex-col items-center overflow-y-auto lg:overflow-visible">
 
-          <h1 className="text-4xl text-black font-medium mb-8 tracking-tight">Revisión de vuelos</h1>
+          <h1 className="text-3xl lg:text-4xl text-black font-medium mb-8 tracking-tight text-center">Revisión de vuelos</h1>
 
           {/* Feedback Message */}
           {message && (
@@ -80,14 +82,14 @@ function App() {
             </div>
           )}
 
-          <div className="flex w-full justify-between px-16">
+          <div className="flex flex-col lg:flex-row w-full justify-between items-center lg:items-start px-4 lg:px-16 gap-12 lg:gap-0 pb-8 lg:pb-0">
             {/* Left Column: Form */}
-            <div className="w-1/3">
+            <div className="w-full lg:w-1/3 flex justify-center lg:block">
               <FlightForm onSearch={handleSearch} isLoading={isLoading} />
             </div>
 
             {/* Right Column: Chart */}
-            <div className="w-1/2 flex justify-center items-center">
+            <div className="w-full lg:w-1/2 flex justify-center items-center">
               <FlightStats data={data} />
             </div>
           </div>
