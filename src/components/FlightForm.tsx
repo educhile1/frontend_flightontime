@@ -1,25 +1,32 @@
+
 import React, { useState } from 'react';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
-import './FlightForm.css'; // We will create this for custom overrides if needed
+import './FlightForm.css'; // Estilos personalizados para el formulario
 
+// Props para el componente FlightForm
 interface FlightFormProps {
+    // Función que se ejecuta al enviar el formulario con los datos seleccionados
     onSearch: (flightNumber: string, airline: string, origin: string, destination: string, date: string, time: string) => void;
+    // Estado de carga para deshabilitar el botón durante la petición
     isLoading: boolean;
 }
 
+// Interfaz para las opciones de aeropuertos
 interface AirportOption {
     id: number;
     nombre: string;
-    nombre_corto: string;
+    nombre_corto: string; // Código IATA
 }
 
+// Interfaz para las opciones de aerolíneas
 interface Aerolinea {
     id: number;
     nombre: string;
     nombre_corto: string;
 }
 
+// Lista de orígenes disponibles
 const ORIGENES: AirportOption[] = [
     { id: 1, nombre: 'Rio de Janeiro', nombre_corto: 'GIG' },
     { id: 2, nombre: 'São Paulo', nombre_corto: 'GRU' },
@@ -29,6 +36,7 @@ const ORIGENES: AirportOption[] = [
     { id: 6, nombre: 'New York', nombre_corto: 'JFK' },
 ];
 
+// Lista de destinos disponibles
 const DESTINOS: AirportOption[] = [
     { id: 1, nombre: 'São Paulo', nombre_corto: 'GRU' },
     { id: 2, nombre: 'Rio de Janeiro', nombre_corto: 'GIG' },
@@ -38,6 +46,7 @@ const DESTINOS: AirportOption[] = [
     { id: 6, nombre: 'New York', nombre_corto: 'JFK' },
 ];
 
+// Lista de aerolíneas disponibles
 const AEROLINEAS: Aerolinea[] = [
     { id: 1, nombre: 'Latam Airlines', nombre_corto: 'Latam' },
     { id: 2, nombre: 'Avianca', nombre_corto: 'Avianca' },
@@ -46,6 +55,7 @@ const AEROLINEAS: Aerolinea[] = [
     { id: 5, nombre: 'Gol', nombre_corto: 'Gol' },
 ];
 
+// Generar opciones de hora en intervalos de 30 minutos (00:00, 00:30, 01:00...)
 const TIME_OPTIONS = Array.from({ length: 48 }, (_, i) => {
     const hour = Math.floor(i / 2).toString().padStart(2, '0');
     const minute = i % 2 === 0 ? '00' : '30';
@@ -53,16 +63,22 @@ const TIME_OPTIONS = Array.from({ length: 48 }, (_, i) => {
 });
 
 export const FlightForm: React.FC<FlightFormProps> = ({ onSearch, isLoading }) => {
+    // Estados locales para los campos del formulario
     const [flightNumber, setFlightNumber] = useState('AM123');
     const [airline, setAirline] = useState('Latam');
     const [origin, setOrigin] = useState('GIG');
-    const [destination, setDestination] = useState('GRU'); // Default to first logic or GRU
-    const [startDate, setStartDate] = useState<Date | null>(new Date('2026-01-01T12:00:00'));
+    const [destination, setDestination] = useState('GRU');
+
+    // Fecha seleccionada (inicializada en una fecha fija para demostración, pero editable)
+    const [startDate, setStartDate] = useState<Date | null>(new Date());
     const [time, setTime] = useState('00:00');
 
+    // Manejador del envío del formulario
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
+        // Formatear la fecha a string simple
         const formattedDate = startDate ? startDate.toLocaleDateString('es-ES') : '';
+        // Llamar a la función del padre para iniciar la búsqueda
         onSearch(flightNumber, airline, origin, destination, formattedDate, time);
     };
 
@@ -70,6 +86,7 @@ export const FlightForm: React.FC<FlightFormProps> = ({ onSearch, isLoading }) =
         <div className="flex flex-col gap-6 w-full max-w-sm">
             <form onSubmit={handleSubmit} className="flex flex-col gap-4">
 
+                {/* Campo: Número de Vuelo */}
                 <div className="flex flex-col">
                     <label className="text-xs font-bold uppercase tracking-wider mb-1 text-gray-700">Número de Vuelo</label>
                     <input
@@ -82,6 +99,7 @@ export const FlightForm: React.FC<FlightFormProps> = ({ onSearch, isLoading }) =
                     />
                 </div>
 
+                {/* Campo: Aerolínea */}
                 <div className="flex flex-col">
                     <label className="text-xs font-bold uppercase tracking-wider mb-1 text-gray-700">Aerolinea</label>
                     <div className="relative">
@@ -96,12 +114,14 @@ export const FlightForm: React.FC<FlightFormProps> = ({ onSearch, isLoading }) =
                                 </option>
                             ))}
                         </select>
+                        {/* Icono de flecha */}
                         <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
                             <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" /></svg>
                         </div>
                     </div>
                 </div>
 
+                {/* Campo: Origen */}
                 <div className="flex flex-col">
                     <label className="text-xs font-bold uppercase tracking-wider mb-1 text-gray-700">Origen</label>
                     <div className="relative">
@@ -122,6 +142,7 @@ export const FlightForm: React.FC<FlightFormProps> = ({ onSearch, isLoading }) =
                     </div>
                 </div>
 
+                {/* Campo: Destino */}
                 <div className="flex flex-col">
                     <label className="text-xs font-bold uppercase tracking-wider mb-1 text-gray-700">Destino</label>
                     <div className="relative">
@@ -136,13 +157,13 @@ export const FlightForm: React.FC<FlightFormProps> = ({ onSearch, isLoading }) =
                                 </option>
                             ))}
                         </select>
-                        {/* Custom arrow icon for better style consistency */}
                         <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
                             <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" /></svg>
                         </div>
                     </div>
                 </div>
 
+                {/* Campo: Fecha con DatePicker */}
                 <div className="flex flex-col">
                     <label className="text-xs font-bold uppercase tracking-wider mb-1 text-gray-700">Fecha</label>
                     <div className="w-full">
@@ -152,10 +173,12 @@ export const FlightForm: React.FC<FlightFormProps> = ({ onSearch, isLoading }) =
                             dateFormat="dd/MM/yyyy"
                             className="w-full border border-gray-400 p-2 text-sm outline-none focus:border-black transition-colors"
                             wrapperClassName="w-full"
+                            minDate={new Date()} // Restringe la selección a hoy o fechas futuras
                         />
                     </div>
                 </div>
 
+                {/* Campo: Hora */}
                 <div className="flex flex-col">
                     <label className="text-xs font-bold uppercase tracking-wider mb-1 text-gray-700">Hora</label>
                     <div className="relative">
@@ -176,6 +199,7 @@ export const FlightForm: React.FC<FlightFormProps> = ({ onSearch, isLoading }) =
                     </div>
                 </div>
 
+                {/* Botón de envío */}
                 <div className="mt-10">
                     <button
                         type="submit"

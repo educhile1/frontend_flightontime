@@ -1,0 +1,109 @@
+{
+    "requestLatitude": "55.408611",
+    "requestLongitude": "37.90611",
+    "aiAnalysis": {
+        "analisis_diario": [
+            {
+                "fecha": "2026-01-09",
+                "estado_general_dia": "CANCELADO",
+                "probabilidad_promedio_dia": 80,
+                "resumen_ejecutivo_dia": "Alto riesgo de cancelaciones o retrasos severos debido a Niebla y Hielo entre 00:00-20:00. Se recomienda mantenerse informado sobre el estado de los vuelos.",
+                "bloques_horarios": [
+                    {
+                        "hora_inicio": "00:00",
+                        "hora_fin": "04:00",
+                        "estado": "ROJO",
+                        "probabilidad": 90,
+                        "factor_principal": "Niebla y Hielo"
+                    },
+                    {
+                        "hora_inicio": "04:00",
+                        "hora_fin": "08:00",
+                        "estado": "ROJO",
+                        "probabilidad": 90,
+                        "factor_principal": "Niebla y Hielo"
+                    },
+                    {
+                        "hora_inicio": "08:00",
+                        "hora_fin": "12:00",
+                        "estado": "ROJO",
+                        "probabilidad": 90,
+                        "factor_principal": "Niebla y Hielo"
+                    },
+                    {
+                        "hora_inicio": "12:00",
+                        "hora_fin": "16:00",
+                        "estado": "ROJO",
+                        "probabilidad": 90,
+                        "factor_principal": "Niebla y Hielo"
+                    },
+                    {
+                        "hora_inicio": "16:00",
+                        "hora_fin": "20:00",
+                        "estado": "ROJO",
+                        "probabilidad": 90,
+                        "factor_principal": "Niebla y Hielo"
+                    },
+                    {
+                        "hora_inicio": "20:00",
+                        "hora_fin": "00:00",
+                        "estado": "AMARILLO",
+                        "probabilidad": 30,
+                        "factor_principal": "Hielo"
+                    }
+                ]
+            },
+            {
+                "fecha": "2026-01-10",
+                "estado_general_dia": "PROBABLE_RETRASO",
+                "probabilidad_promedio_dia": 30,
+                "resumen_ejecutivo_dia": "Se anticipan posibles retrasos debido a Hielo a lo largo del día. Se recomienda precaución.",
+                "bloques_horarios": [
+                    {
+                        "hora_inicio": "00:00",
+                        "hora_fin": "04:00",
+                        "estado": "AMARILLO",
+                        "probabilidad": 30,
+                        "factor_principal": "Hielo"
+                    },
+                    {
+                        "hora_inicio": "04:00",
+                        "hora_fin": "08:00",
+                        "estado": "AMARILLO",
+                        "probabilidad": 30,
+                        "factor_principal": "Hielo"
+                    },
+                    {
+                        "hora_inicio": "08:00",
+                        "hora_fin": "12:00",
+                        "estado": "AMARILLO",
+                        "probabilidad": 30,
+                        "factor_principal": "Hielo"
+                    },
+                    {
+                        "hora_inicio": "12:00",
+                        "hora_fin": "16:00",
+                        "estado": "AMARILLO",
+                        "probabilidad": 30,
+                        "factor_principal": "Hielo"
+                    },
+                    {
+                        "hora_inicio": "16:00",
+                        "hora_fin": "20:00",
+                        "estado": "AMARILLO",
+                        "probabilidad": 30,
+                        "factor_principal": "Hielo"
+                    },
+                    {
+                        "hora_inicio": "20:00",
+                        "hora_fin": "00:00",
+                        "estado": "AMARILLO",
+                        "probabilidad": 30,
+                        "factor_principal": "Hielo"
+                    }
+                ]
+            }
+        ]
+    },
+    "request_fecha_vuelo": "2026-01-09"
+}
