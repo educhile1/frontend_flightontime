@@ -93,3 +93,53 @@ export const fetchFlightPrediction = async (
         throw error;
     }
 };
+
+
+
+
+
+
+// Interfaz para la aerolínea
+export interface Airline {
+    id: number;
+    shortName: string;
+    fullName: string;
+    active: boolean;
+}
+
+// Interfaz para la solicitud de aerolíneas
+export interface AirlineRequest {
+    active: string;
+}
+
+/**
+ * Función para obtener la lista de aerolíneas desde el backend.
+ * Realiza una petición POST al endpoint /api/v1/get-airline.
+ * 
+ * @returns Promesa con la lista de aerolíneas (Airline[])
+ */
+export const getAirlines = async (): Promise<Airline[]> => {
+    try {
+        const requestData: AirlineRequest = {
+            active: "true"
+        };
+
+        console.log('API Request (Get Airlines):', requestData);
+
+        const response = await axios.post<Airline[]>(
+            'http://localhost:8080/api/v1/get-airline',
+            requestData,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            }
+        );
+
+        console.log('API Response (Get Airlines):', response.data);
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching airlines:', error);
+        throw error;
+    }
+};
