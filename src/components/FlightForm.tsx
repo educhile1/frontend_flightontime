@@ -163,7 +163,7 @@ export const FlightForm: React.FC<FlightFormProps> = ({
                         >
                             {airports.map((airport) => (
                                 <option key={airport.id} value={airport.id}>
-                                    {airport.city} - {airport.name} ({airport.iata})
+                                    ({airport.iata}) {airport.city} - {airport.name}
                                 </option>
                             ))}
                         </select>
@@ -190,7 +190,7 @@ export const FlightForm: React.FC<FlightFormProps> = ({
                         >
                             {airports.map((airport) => (
                                 <option key={airport.id} value={airport.id}>
-                                    {airport.city} - {airport.name} ({airport.iata})
+                                    ({airport.iata}) {airport.city} - {airport.name}
                                 </option>
                             ))}
                         </select>

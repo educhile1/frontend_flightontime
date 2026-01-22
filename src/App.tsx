@@ -3,7 +3,7 @@ import React from 'react';
 import { FlightForm } from './components/FlightForm';
 import { FlightStats } from './components/FlightStats';
 import { FlightMap } from './components/FlightMap';
-import { fetchFlightPrediction, getAirlines, fetchTravelGuide, type FlightData, type Airport, type Airline, type TravelGuideResponse } from './services/api';
+import { fetchFlightPrediction, getAirlines, fetchTravelGuide, fetchRouteDelays, type FlightData, type Airport, type Airline, type TravelGuideResponse } from './services/api';
 import axios from 'axios';
 
 import { DashboardChart } from './components/DashboardChart';
@@ -130,6 +130,29 @@ function App() {
       // Llamada al servicio: Predicción de Vuelo
       const flightData = await fetchFlightPrediction(flightNumber, airline, origin, destination, departureTime);
 
+      // --- LOGICA AGREGADA: Obtener tiempo promedio real histórico ---
+      try {
+        const routeDelays = await fetchRouteDelays(origin, destination);
+
+        // Filtrar por la aerolínea seleccionada
+        const airlineDelays = routeDelays.filter(d => String(d.aerolinea) === String(airline));
+
+        if (airlineDelays.length > 0) {
+          // Calcular promedio real
+          const totalDelay = airlineDelays.reduce((sum, item) => sum + item.tiempo, 0);
+          const avgDelay = totalDelay / airlineDelays.length;
+
+          // Actualizar el valor simulado con el real (redondeado)
+          flightData.averageDelayMinutes = Math.round(avgDelay);
+          console.log(`Updated average delay from history: ${flightData.averageDelayMinutes} mins based on ${airlineDelays.length} records.`);
+        } else {
+          console.log("No historical data found for this airline on this route, keeping simulated delay.");
+        }
+      } catch (err) {
+        console.warn("Failed to fetch historical delays for stats, keeping prediction default.", err);
+      }
+      // ---------------------------------------------------------------
+
       // Actualizar el estado con los datos del vuelo recibidos
       setData(flightData);
 
@@ -250,10 +273,12 @@ function App() {
               {/* Columna Derecha: Mapa y Estadísticas (Flexible) */}
               <div className="w-full lg:w-2/3 flex flex-col gap-6 h-full pb-8">
 
-                {/* Mapa */}
-                <div className="w-full h-80 lg:h-96 shrink-0">
-                  <FlightMap origin={selectedOrigin} destination={selectedDestination} />
-                </div>
+                {/* Mapa: Solo se muestra si origen y destino son diferentes */}
+                {selectedOrigin?.id !== selectedDestination?.id && (
+                  <div className="w-full h-80 lg:h-96 shrink-0">
+                    <FlightMap origin={selectedOrigin} destination={selectedDestination} />
+                  </div>
+                )}
 
                 {/* Gráfico de Comparativa de Ruta */}
                 <RouteDelayChart

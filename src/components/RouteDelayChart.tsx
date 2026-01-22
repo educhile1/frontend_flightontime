@@ -10,7 +10,7 @@ import {
     LabelList,
     Cell
 } from 'recharts';
-import { fetchRouteDelays, type RouteDelay, type Airline } from '../services/api';
+import { fetchRouteDelays, type Airline } from '../services/api';
 import { Loader2, AlertCircle, Info } from 'lucide-react';
 
 interface RouteDelayChartProps {
@@ -63,7 +63,7 @@ export const RouteDelayChart: React.FC<RouteDelayChartProps> = ({ originId, dest
                     const airlineInfo = airlines.find(a => String(a.id) === airlineId);
                     return {
                         airlineId,
-                        airlineName: airlineInfo ? airlineInfo.shortName : `ID ${airlineId}`,
+                        airlineName: airlineInfo ? airlineInfo.fullName : `ID ${airlineId}`,
                         avgDelay: Number((stats.totalTime / stats.count).toFixed(2)),
                         maxDelay: Number(stats.maxTime.toFixed(2)),
                         count: stats.count
@@ -86,8 +86,17 @@ export const RouteDelayChart: React.FC<RouteDelayChartProps> = ({ originId, dest
         loadData();
     }, [originId, destinationId, airlines]);
 
-    if (!originId || !destinationId || originId === destinationId) {
+    if (!originId || !destinationId) {
         return null;
+    }
+
+    if (originId === destinationId) {
+        return (
+            <div className="flex items-center text-orange-500 text-sm p-4 bg-orange-50 rounded-lg w-full mt-4">
+                <AlertCircle className="h-4 w-4 mr-2" />
+                El origen y el destino no pueden ser iguales.
+            </div>
+        );
     }
 
     if (isLoading) {
@@ -123,19 +132,23 @@ export const RouteDelayChart: React.FC<RouteDelayChartProps> = ({ originId, dest
                 Comparativa de Retrasos en esta Ruta
             </h3>
 
-            <div className="h-[250px] w-full">
+            <div className="h-[350px] w-full">
                 <ResponsiveContainer width="100%" height="100%">
                     <BarChart
                         data={data}
                         layout="horizontal"
-                        margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+                        margin={{ top: 20, right: 30, left: 20, bottom: 60 }}
                     >
                         <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#E5E7EB" />
                         <XAxis
                             dataKey="airlineName"
                             axisLine={false}
                             tickLine={false}
-                            tick={{ fill: '#4B5563', fontSize: 12, fontWeight: 500 }}
+                            tick={{ fill: '#4B5563', fontSize: 11, fontWeight: 500, textAnchor: 'end' }}
+                            angle={-90}
+                            interval={0}
+                            height={120}
+                            dy={5}
                         />
                         <YAxis
                             axisLine={false}
