@@ -588,8 +588,8 @@ Este proyecto está bajo la Licencia MIT. Ver archivo `LICENSE` para más detall
 
 Para soporte técnico o preguntas:
 - Abrir issue en GitHub
-- Email: [tu-email@ejemplo.com]
-- Documentación: [Link a docs adicionales]
+- Email: [eduardocayun@gmail.com]
+
 
 ---
 
